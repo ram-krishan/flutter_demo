@@ -18,7 +18,7 @@ class Transaction {
     for (var i = 1; i <= transactionCount; i++) {
       list.add(Transaction(
           amount: 10.599 * i,
-          createdAt: DateTime.now(),
+          createdAt: DateTime.now().subtract(Duration(days: i - 1)),
           id: i.toString(),
           title: "transaction $i"));
     }

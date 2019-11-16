@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import './transactionList.dart';
 import './newTransaction.dart';
+import './expenceChart.dart';
+
+// Why we created new My Home Page widget
+// This is because the context you are passing into the showModalBottomSheet method is a context that doesn't yet have a MaterialLocalizations widget in the widget tree, the MaterialLocalizations and MediaQuery widget gets added implicitly by the MaterialApp widget.
 
 class ExpenceApp extends StatefulWidget {
   @override
@@ -11,7 +15,7 @@ class ExpenceApp extends StatefulWidget {
 
 class _ExpenceAppState extends State<ExpenceApp> {
   final List<Transaction> _transactions =
-      Transaction.build(transactionCount: 1);
+      Transaction.build(transactionCount: 10);
 
   void _handleActionClickButton(ctx) {
     showModalBottomSheet(
@@ -31,6 +35,13 @@ class _ExpenceAppState extends State<ExpenceApp> {
       _transactions.add(Transaction(
           id: id, title: title, amount: amount, createdAt: createdAt));
     });
+  }
+
+  List<Transaction> get _recentTransactions {
+    return _transactions
+        .where((tx) =>
+            tx.createdAt.isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
   }
 
   @override
@@ -53,6 +64,7 @@ class _ExpenceAppState extends State<ExpenceApp> {
         child: Container(
           width: double.infinity,
           child: Column(children: [
+            ExpenceChart(_recentTransactions),
             TransactionList(transactions: _transactions),
           ]),
         ),
