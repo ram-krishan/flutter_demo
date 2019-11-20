@@ -15,12 +15,14 @@ class ChartBar extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          FittedBox(
-            child: Text(
-              "\$${amountSpending.toStringAsFixed(2)}",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          Container(
+            height: 10,
+            child: FittedBox(
+              child: Text(
+                "\$${amountSpending.toStringAsFixed(2)}",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           SizedBox(
@@ -38,9 +40,9 @@ class ChartBar extends StatelessWidget {
                       color: Colors.grey,
                       width: 1,
                     ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                    // borderRadius: BorderRadius.all(
+                    //   Radius.circular(20),
+                    // ),
                   ),
                 ),
                 FractionallySizedBox(
@@ -52,9 +54,9 @@ class ChartBar extends StatelessWidget {
                         width: 1,
                         color: Colors.grey,
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
+                      // borderRadius: BorderRadius.all(
+                      //   Radius.circular(20),
+                      // ),
                     ),
                   ),
                 ),

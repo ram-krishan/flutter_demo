@@ -27,9 +27,9 @@ class _ExpenceAppState extends State<ExpenceApp> {
         });
   }
 
-  void _handleAddTransaction(title, amount) {
-    DateTime createdAt = DateTime.now();
-    String id = createdAt.millisecondsSinceEpoch.toString();
+  void _handleAddTransaction(title, amount, date) {
+    DateTime createdAt = date;
+    String id = date.toString() + DateTime.now().toString();
 
     setState(() {
       _transactions.add(Transaction(
@@ -38,10 +38,21 @@ class _ExpenceAppState extends State<ExpenceApp> {
   }
 
   List<Transaction> get _recentTransactions {
-    return _transactions
+    List<Transaction> latestTransactions = _transactions
         .where((tx) =>
             tx.createdAt.isAfter(DateTime.now().subtract(Duration(days: 7))))
         .toList();
+
+    latestTransactions.sort((a, b) => a.createdAt.isAfter(b.createdAt) ? 1 : 0);
+    return latestTransactions;
+  }
+
+  void _removeTransactoin(id) {
+    print(_transactions.toString());
+
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -65,7 +76,10 @@ class _ExpenceAppState extends State<ExpenceApp> {
           width: double.infinity,
           child: Column(children: [
             ExpenceChart(_recentTransactions),
-            TransactionList(transactions: _transactions),
+            TransactionList(
+              transactions: _transactions,
+              removeTransactoin: _removeTransactoin,
+            ),
           ]),
         ),
       ),

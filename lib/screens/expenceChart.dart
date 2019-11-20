@@ -36,7 +36,6 @@ class ExpenceChart extends StatelessWidget {
     _barData.forEach((key, value) {
       chartBars.add(
         Flexible(
-          fit: FlexFit.tight,
           flex: 1,
           child: ChartBar(
               totalSpending: totalSpending,
@@ -54,7 +53,7 @@ class ExpenceChart extends StatelessWidget {
     return Container(
       child: Card(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: chartRow,
         ),
       ),
