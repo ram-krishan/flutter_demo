@@ -41,9 +41,12 @@ class TransactionCard extends StatelessWidget {
             },
           ),
         ),
-        Divider(
-          thickness: 5,
-          color: Colors.grey[200],
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Divider(
+            thickness: 1,
+            color: Colors.grey[200],
+          ),
         ),
       ],
     );

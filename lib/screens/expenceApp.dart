@@ -16,6 +16,7 @@ class ExpenceApp extends StatefulWidget {
 class _ExpenceAppState extends State<ExpenceApp> {
   final List<Transaction> _transactions =
       Transaction.build(transactionCount: 10);
+  bool chartView = false;
 
   void _handleActionClickButton(ctx) {
     showModalBottomSheet(
@@ -55,34 +56,90 @@ class _ExpenceAppState extends State<ExpenceApp> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Expence App"),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () => _handleActionClickButton(context),
-              icon: Icon(Icons.add))
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _handleActionClickButton(context),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Column(children: [
-            ExpenceChart(_recentTransactions),
-            TransactionList(
+  double appBarHeight(AppBar appBar) => appBar.preferredSize.height;
+  double statusBarHeidth(MediaQueryData mediaQuery) => mediaQuery.padding.top;
+
+  Widget renderLandScapView(mediaQuery, appBar) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Chart View"),
+            Switch(
+              value: chartView,
+              onChanged: (value) {
+                setState(() {
+                  chartView = value;
+                });
+              },
+            )
+          ],
+        ),
+        if (chartView)
+          Container(
+            child: ExpenceChart(_recentTransactions),
+          ),
+        if (!chartView)
+          Container(
+            height: mediaQuery.size.height -
+                mediaQuery.padding.top -
+                appBarHeight(appBar) -
+                48 -
+                mediaQuery.viewInsets.bottom,
+            child: TransactionList(
               transactions: _transactions,
               removeTransactoin: _removeTransactoin,
             ),
-          ]),
-        ),
-      ),
+          ),
+      ],
     );
+  }
+
+  Widget renderPotraitView(mediaQuery, appBar) {
+    return Container(
+      width: double.infinity,
+      child: Column(children: [
+        Container(
+          height: mediaQuery.size.height * 0.3,
+          child: ExpenceChart(_recentTransactions),
+        ),
+        Container(
+          height: mediaQuery.size.height * 0.7 -
+              mediaQuery.padding.top -
+              appBarHeight(appBar) -
+              mediaQuery.viewInsets.bottom,
+          child: TransactionList(
+            transactions: _transactions,
+            removeTransactoin: _removeTransactoin,
+          ),
+        ),
+      ]),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final appBar = AppBar(
+      title: Text("Expence App"),
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => _handleActionClickButton(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+
+    return Scaffold(
+        appBar: appBar,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => _handleActionClickButton(context),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: (mediaQuery.orientation == Orientation.portrait
+            ? renderPotraitView(mediaQuery, appBar)
+            : renderLandScapView(mediaQuery, appBar)));
   }
 }

@@ -17,11 +17,11 @@ class ChartBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            height: 10,
+            height: 20,
             child: FittedBox(
               child: Text(
                 "\$${amountSpending.toStringAsFixed(2)}",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
           ),
